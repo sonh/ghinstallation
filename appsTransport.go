@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"time"
 
-	jwt "github.com/golang-jwt/jwt/v4"
+	jwt "github.com/golang-jwt/jwt/v5"
 )
 
 // AppsTransport provides a http.RoundTripper by wrapping an existing
@@ -88,7 +88,7 @@ func (t *AppsTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	// Truncate them before passing to jwt-go.
 	iss := time.Now().Add(-30 * time.Second).Truncate(time.Second)
 	exp := iss.Add(2 * time.Minute)
-	claims := &jwt.RegisteredClaims{
+	claims := jwt.RegisteredClaims{
 		IssuedAt:  jwt.NewNumericDate(iss),
 		ExpiresAt: jwt.NewNumericDate(exp),
 		Issuer:    strconv.FormatInt(t.appID, 10),
